@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>To-Do To-Did — Standalone Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Landing Gateway -->
+    <div id="landing-screen" class="landing-overlay hidden">
+        <div class="landing-content">
+            <h1 class="landing-title">To-Do To-Did</h1>
+            <p class="landing-tagline">Less planning. More doing.</p>
+            <p class="landing-subtitle">A calm, fast task app that stays out of your way.</p>
+            <button id="btn-open-app" class="landing-btn">Open the app</button>
+            <div class="landing-features">
+                <div class="feature-item"><span>●</span> No dashboards.</div>
+                <div class="feature-item"><span>●</span> No accounts.</div>
+                <div class="feature-item"><span>●</span> No noise.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="app" class="container">
+        <header>
+            <div class="brand">
+                <h1 id="brand-logo" style="cursor: pointer">To-Do To-Did</h1>
+                <p id="tagline"></p>
+            </div>
+            <div class="controls">
+                <button id="toggle-theme" title="Theme">🌓</button>
+                <button id="toggle-view" title="View">📅</button>
+            </div>
+        </header>
+
+        <form id="task-form" class="input-group">
+            <button type="button" id="form-priority" class="priority-bar MEDIUM" title="Draft Priority"></button>
+            <input type="text" id="task-input" autocomplete="off" spellcheck="false">
+        </form>
+
+        <div id="list-view" class="view active">
+            <div class="section" data-type="NOW">
+                <button class="section-header"><span></span><span class="count">0</span></button>
+                <div class="tasks"></div>
+            </div>
+            <div class="section" data-type="TODAY">
+                <button class="section-header"><span></span><span class="count">0</span></button>
+                <div class="tasks"></div>
+            </div>
+            <div class="section" data-type="TOMORROW">
+                <button class="section-header"><span></span><span class="count">0</span></button>
+                <div class="tasks"></div>
+            </div>
+            <div class="section" data-type="FUTURE">
+                <button class="section-header"><span></span><span class="count">0</span></button>
+                <div class="tasks"></div>
+            </div>
+            <div class="section" data-type="DID">
+                <button class="section-header"><span></span><span class="count">0</span></button>
+                <div class="tasks"></div>
+            </div>
+        </div>
+
+        <div id="calendar-view" class="view">
+            <div class="calendar-header">
+                <div class="nav">
+                    <button id="prev-nav" class="nav-btn">◀️</button>
+                    <button id="next-nav" class="nav-btn">▶️</button>
+                    <h2 id="current-period-label"></h2>
+                </div>
+                <div class="view-selector">
+                    <button id="view-week">WEEK</button>
+                    <button id="view-month" class="active">MONTH</button>
+                </div>
+            </div>
+            <div id="calendar-container">
+                <!-- Grid dynamically swapped between Monthly/Weekly -->
+                <div id="calendar-grid"></div>
+            </div>
+        </div>
+
+        <div id="focus-timer" class="hidden">
+            <div class="timer-content">
+                <span id="timer-mode"></span>
+                <div id="timer-display">25:00</div>
+                <button id="stop-timer">🛑</button>
+            </div>
+        </div>
+
+        <div id="undo-toast" class="toast hidden">
+            <button id="undo-btn">↩️ UNDO</button>
+        </div>
+
+        <footer id="footer">
+            <div class="footer-logo">
+                <span>TD <script>document.write(new Date().getFullYear())</script> · To-Do To-Did</span>
+            </div>
+            <div class="footer-info">
+                <span id="footer-date"></span> · <span id="footer-time"></span>
+            </div>
+            <div class="footer-credits">
+                Credits: Designed & built by Fabio Papoila
+            </div>
+        </footer>
+    </div>
+    <script src="jquery.js"></script>
+    <script src="javascript.js"></script>
+</body>
+</html>

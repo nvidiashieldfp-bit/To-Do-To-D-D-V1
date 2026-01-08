@@ -1,0 +1,30 @@
+
+{
+  "rules": {
+    "no-restricted-properties": [
+      "error",
+      {
+        "property": "parentElement",
+        "message": "Invalid Playwright usage: Do not use .parentElement on Locators. Use .locator('..') for stable parent traversal."
+      },
+      {
+        "property": "innerText",
+        "message": "Prefer Locator-native assertions like expect(locator).toHaveText() or expect(locator).toContainText() over manual innerText() extraction for better stability and automatic retries."
+      },
+      {
+        "property": "textContent",
+        "message": "Prefer Locator-native assertions like expect(locator).toHaveText() or expect(locator).toContainText() over manual textContent extraction for better stability and automatic retries."
+      },
+      {
+        "object": "page",
+        "property": "$",
+        "message": "Prefer page.locator() over page.$() for better stability and auto-retrying logic."
+      },
+      {
+        "object": "page",
+        "property": "$$",
+        "message": "Prefer page.locator() over page.$$() for better stability and auto-retrying logic."
+      }
+    ]
+  }
+}
