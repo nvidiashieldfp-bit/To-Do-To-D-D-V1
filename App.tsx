@@ -145,7 +145,7 @@ export default function App() {
                 style={{ opacity: 'var(--icon-opacity)' }}
               >
                 <span className={isDarkMode ? 'text-indigo-300 drop-shadow-[0_0_8px_rgba(165,180,252,0.4)]' : 'text-amber-500 drop-shadow-[0_0_8px_rgba(245,158,11,0.3)]'}>
-                  ☀️
+                  {isDarkMode ? '🌙' : '☀️'}
                 </span>
               </button>
               <button onClick={handleToggleView} className={`w-10 h-10 md:w-11 md:h-11 flex items-center justify-center rounded-xl transition-all text-lg icon-muted ${state.viewMode === 'calendar' ? (isMuted ? 'bg-gray-500 text-white shadow-none' : 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/20') : (isMuted ? 'bg-comfort-surface dark:bg-white/5 grayscale text-gray-400' : 'bg-comfort-surface dark:bg-white/5 hover:bg-comfort-border dark:hover:bg-white/10') }`} style={{ opacity: 'var(--icon-opacity)' }} >

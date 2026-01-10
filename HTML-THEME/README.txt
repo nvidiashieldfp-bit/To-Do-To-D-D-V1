@@ -1,5 +1,5 @@
 
-To-Do To-Did PRO — Static Theme v1.0
+To-Do To-Did PRO — Static Theme v1.1
 ================================
 
 To-Do To-Did is a silent, focused, and minimal task management application built for power users who value cognitive clarity.

@@ -138,11 +138,7 @@ export const TaskRow: React.FC<TaskRowProps> = ({ task, language, onUpdate, onDe
         tabIndex={-1}
         title={`${t('priority_label', language)}: ${task.priority}`}
         style={{ opacity: isMuted ? 'var(--icon-opacity)' : 1 }}
-      >
-        <span className="text-[8px] font-black text-white/50 select-none">
-          {task.priority === Priority.LOW ? '1' : task.priority === Priority.MEDIUM ? '2' : '3'}
-        </span>
-      </button>
+      />
 
       <div className="flex-1 min-w-0" onClick={startInlineEdit}>
         {isEditing ? (

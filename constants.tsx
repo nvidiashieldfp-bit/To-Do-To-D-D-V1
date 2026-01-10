@@ -119,7 +119,10 @@ export const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
     mantra_busy: 'One thing at a time. The rest can wait.',
     mantra_night: 'The day is done. Rest is also work.',
     mantra_morning: 'Fresh mind. Start with the most meaningful.',
-    mantra_focus: 'Deep focus active. Protect your attention.'
+    mantra_focus: 'Deep focus active. Protect your attention.',
+    nlp_priority_high: 'urgent, important, high priority',
+    nlp_priority_low: 'low priority, trivial',
+    nlp_time_example: 'tomorrow at 3pm'
   },
   pt: {
     tagline: 'Menos planeamento. Mais ação.',
@@ -155,7 +158,10 @@ export const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
     mantra_busy: 'Uma coisa de cada vez. O resto espera.',
     mantra_night: 'O dia terminou. O descanso também é trabalho.',
     mantra_morning: 'Mente fresca. Começa pelo mais significativo.',
-    mantra_focus: 'Foco profundo ativo. Protege a tua atenção.'
+    mantra_focus: 'Foco profundo ativo. Protege a tua atenção.',
+    nlp_priority_high: 'urgente, importante, alta prioridade',
+    nlp_priority_low: 'prioridade baixa, trivial',
+    nlp_time_example: 'amanhã às 9h'
   },
   es: {
     tagline: 'Menos planificación. Más acción.',
@@ -191,7 +197,10 @@ export const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
     mantra_busy: 'Una cosa a la vez. Lo demás puede esperar.',
     mantra_night: 'El día terminó. Descansar también es trabajar.',
     mantra_morning: 'Mente fresca. Empieza por lo más importante.',
-    mantra_focus: 'Enfoque profundo activo. Cuida tu atención.'
+    mantra_focus: 'Enfoque profundo activo. Cuida tu atención.',
+    nlp_priority_high: 'urgente, importante, alta prioridad',
+    nlp_priority_low: 'baja prioridad, trivial',
+    nlp_time_example: 'mañana a las 9h'
   },
   fr: {
     tagline: 'Moins de planification. Plus d\'action.',
@@ -227,7 +236,10 @@ export const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
     mantra_busy: 'Une chose à la fois. Le reste peut attendre.',
     mantra_night: 'La journée est finie. Se reposer, c\'est travailler.',
     mantra_morning: 'Esprit frais. Commencez par l\'essentiel.',
-    mantra_focus: 'Focus profond actif. Protégez votre attention.'
+    mantra_focus: 'Focus profond actif. Protégez votre attention.',
+    nlp_priority_high: 'urgent, important, haute priorité',
+    nlp_priority_low: 'basse priorité, trivial',
+    nlp_time_example: 'demain à 15h'
   }
 };
 

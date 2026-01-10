@@ -94,7 +94,9 @@ export function useTodoStore() {
       ...sharedState, 
       tasks: [{ 
         ...task, id, createdAt: Date.now(), completed: false, order: Date.now(),
-        date: sanitize(task.date), time: sanitize(task.time)
+        // Bugfix: Tasks created without a specific date (Inbox) should default to Today, not null (Future)
+        date: sanitize(task.date) || getNowString(),
+        time: sanitize(task.time)
       }, ...sharedState.tasks],
       draft: '', 
       draftPriority: Priority.MEDIUM 
@@ -173,7 +175,7 @@ export function useTodoStore() {
       date = tomorrow; 
       completed = false; 
     } else if (section === SectionType.FUTURE) {
-      date = null; 
+      date = null; // Correct: Future implies "no specific date" or "later"
       completed = false;
     } else if (section === SectionType.DID) { 
       completed = true; 
@@ -198,7 +200,16 @@ export function useTodoStore() {
 
     sharedState.tasks.forEach(t => {
       if (t.completed) { sections.DID.push(t); return; }
-      const d = sanitize(t.date) || today;
+      
+      const d = sanitize(t.date);
+      
+      // Bugfix: Explicitly handle null dates as FUTURE. 
+      // Do not default to 'today' here, or reordering to Future will fail.
+      if (!d) {
+        sections.FUTURE.push(t);
+        return;
+      }
+
       if (d < today) {
         sections.NOW.push(t);
       } else if (d === today) {

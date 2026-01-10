@@ -62,11 +62,7 @@ export const TaskInput: React.FC<TaskInputProps> = ({ language }) => {
         title={getPriorityHint()} 
         tabIndex={-1}
         style={{ opacity: isMuted ? 'var(--icon-opacity)' : 1 }}
-      >
-        <span className="text-[10px] font-black text-white/50 select-none">
-          {state.draftPriority === Priority.LOW ? '1' : state.draftPriority === Priority.MEDIUM ? '2' : '3'}
-        </span>
-      </button>
+      />
       <div className="relative flex-1">
         <input 
           ref={inputRef} 
