@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -7,42 +7,155 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Landing Gateway -->
-    <div id="landing-screen" class="landing-overlay hidden">
-        <div class="landing-content">
-            <h1 class="landing-title">To-Do To-Did</h1>
-            <p class="landing-tagline">Less planning. More doing.</p>
-            <p class="landing-subtitle">A calm, fast task app that stays out of your way.</p>
-            <button id="btn-open-app" class="landing-btn">Open the app</button>
-            <div class="landing-features">
-                <div class="feature-item"><span>●</span> No dashboards.</div>
-                <div class="feature-item"><span>●</span> No accounts.</div>
-                <div class="feature-item"><span>●</span> No noise.</div>
+    <!-- SCRIPT CRÍTICO: Executa antes do layout para garantir Tema e Estado corretos -->
+    <script>
+        (function() {
+            try {
+                var saved = localStorage.getItem('todo_to_did_v1');
+                if (saved) {
+                    var state = JSON.parse(saved);
+                    
+                    // 1. Aplicar Tema Escuro Imediatamente
+                    if (state.theme === 'dark' || state.theme === 'night') {
+                        document.body.classList.add('dark');
+                    }
+
+                    // 2. Esconder Landing Page se já foi vista
+                    if (state.showLanding === false) {
+                        var style = document.createElement('style');
+                        style.innerHTML = '#landing-screen { display: none !important; }';
+                        document.head.appendChild(style);
+                    }
+                } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    // Fallback para preferência do sistema se não houver save
+                    document.body.classList.add('dark');
+                }
+            } catch(e) { console.error('Critical render script failed', e); }
+        })();
+    </script>
+
+    <!-- Ecrã de Entrada (Landing Page Completa) -->
+    <div id="landing-screen" class="landing-overlay">
+        <div class="landing-scroll-container">
+            <!-- Hero Section -->
+            <section class="landing-hero">
+                <div class="landing-hero-content">
+                    <h1 class="landing-title">To-Do To-Did</h1>
+                    <p class="landing-tagline">Menos planeamento. Mais ação.</p>
+                    <p class="landing-subtitle">Um gestor de tarefas calmo e rápido que não atrapalha.</p>
+                    <button id="btn-open-app" class="landing-btn">Abrir a aplicação</button>
+                </div>
+            </section>
+
+            <div class="landing-sections-wrapper">
+                <!-- What Is This -->
+                <section class="landing-section">
+                    <h3 class="landing-section-title" data-i18n="landing_what_title">O QUE É ISTO?</h3>
+                    <div class="landing-text-block">
+                        <p data-i18n="landing_what_p1">Um gestor de tarefas feito para quem detesta gerir tarefas.</p>
+                        <ul class="landing-list" data-i18n-list="landing_what_list">
+                            <!-- JS preenche isto -->
+                        </ul>
+                        <p class="highlight-text" data-i18n="landing_what_p2">Basta escrever. Nós tratamos do resto.</p>
+                    </div>
+                </section>
+
+                <!-- How It Works -->
+                <section class="landing-section">
+                    <h3 class="landing-section-title" data-i18n="landing_how_title">COMO FUNCIONA</h3>
+                    <div class="landing-steps">
+                        <div class="step-item">
+                            <div class="step-num">1</div>
+                            <div>
+                                <h4 data-i18n="landing_how_1_t">Entrada Natural</h4>
+                                <p data-i18n="landing_how_1_d">Escreva "Comprar leite amanhã 10h" e nós processamos.</p>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-num">2</div>
+                            <div>
+                                <h4 data-i18n="landing_how_2_t">Secções Inteligentes</h4>
+                                <p data-i18n="landing_how_2_d">As tarefas movem-se sozinhas com base no tempo.</p>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-num">3</div>
+                            <div>
+                                <h4 data-i18n="landing_how_3_t">Foco Profundo</h4>
+                                <p data-i18n="landing_how_3_d">Temporizador Pomodoro integrado.</p>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-num">4</div>
+                            <div>
+                                <h4 data-i18n="landing_how_4_t">Dados Locais</h4>
+                                <p data-i18n="landing_how_4_d">Tudo fica no seu dispositivo. Privacidade total.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Why -->
+                <section class="landing-section">
+                    <h3 class="landing-section-title" data-i18n="landing_why_title">PORQUÊ TO-DO TO-DID?</h3>
+                    <div class="landing-grid">
+                        <div class="grid-card"><span>●</span> <span data-i18n="landing_why_1">Zero distrações.</span></div>
+                        <div class="grid-card"><span>●</span> <span data-i18n="landing_why_2">Rápido como o pensamento.</span></div>
+                        <div class="grid-card"><span>●</span> <span data-i18n="landing_why_3">Funciona offline.</span></div>
+                        <div class="grid-card"><span>●</span> <span data-i18n="landing_why_4">Grátis. Sem registos.</span></div>
+                    </div>
+                </section>
+
+                <!-- Privacy -->
+                <section class="landing-section">
+                    <h3 class="landing-section-title" data-i18n="landing_privacy_title">PRIVACIDADE</h3>
+                    <div class="landing-text-block">
+                        <p class="mb-8" data-i18n="landing_privacy_p1">Não o seguimos. Nem sequer temos um servidor.</p>
+                        <div class="privacy-tags" data-i18n-list="landing_privacy_list">
+                            <!-- JS preenche isto -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Landing Footer -->
+                <footer class="landing-footer">
+                    <div class="footer-brand">
+                        <span>TD <script>document.write(new Date().getFullYear())</script></span>
+                        <span class="dot"></span>
+                        <span class="landing-title-small">To-Do To-Did</span>
+                    </div>
+                    <p class="footer-motto" data-i18n="landing_footer">Foco. Eficiência. Clareza.</p>
+                </footer>
             </div>
         </div>
     </div>
 
+    <!-- Aplicação Principal -->
     <div id="app" class="container">
+        <!-- Cabeçalho com Logótipo e Controlos -->
         <header>
             <div class="brand">
                 <h1 id="brand-logo" style="cursor: pointer">To-Do To-Did</h1>
                 <p id="tagline"></p>
             </div>
             <div class="controls">
-                <button id="toggle-theme" title="Theme">🌓</button>
-                <button id="toggle-view" title="View">📅</button>
+                <button id="toggle-theme" title="Tema">🌓</button>
+                <button id="toggle-view" title="Vista">📅</button>
             </div>
         </header>
 
+        <!-- Formulário de Entrada Principal -->
         <form id="task-form" class="input-group">
-            <button type="button" id="form-priority" class="priority-bar MEDIUM" title="Draft Priority"></button>
+            <button type="button" id="form-priority" class="priority-bar MEDIUM" title="Prioridade do Rascunho"></button>
             <input type="text" id="task-input" autocomplete="off" spellcheck="false">
         </form>
 
+        <!-- Vista de Lista (Padrão) -->
         <div id="list-view" class="view active">
+            <!-- Secções Inteligentes -->
             <div class="section" data-type="NOW">
                 <button class="section-header"><span></span><span class="count">0</span></button>
                 <div class="tasks"></div>
@@ -65,6 +178,7 @@
             </div>
         </div>
 
+        <!-- Vista de Calendário -->
         <div id="calendar-view" class="view">
             <div class="calendar-header">
                 <div class="nav">
@@ -73,28 +187,21 @@
                     <h2 id="current-period-label"></h2>
                 </div>
                 <div class="view-selector">
-                    <button id="view-week">WEEK</button>
-                    <button id="view-month" class="active">MONTH</button>
+                    <button id="view-week">SEMANA</button>
+                    <button id="view-month" class="active">MÊS</button>
                 </div>
             </div>
             <div id="calendar-container">
-                <!-- Grid dynamically swapped between Monthly/Weekly -->
                 <div id="calendar-grid"></div>
             </div>
         </div>
 
-        <div id="focus-timer" class="hidden">
-            <div class="timer-content">
-                <span id="timer-mode"></span>
-                <div id="timer-display">25:00</div>
-                <button id="stop-timer">🛑</button>
-            </div>
+        <!-- Contentor de Mantras Dinâmicos -->
+        <div id="mantra-container" class="mantra-wrapper">
+            <p id="dynamic-mantra"></p>
         </div>
 
-        <div id="undo-toast" class="toast hidden">
-            <button id="undo-btn">↩️ UNDO</button>
-        </div>
-
+        <!-- Rodapé da App -->
         <footer id="footer">
             <div class="footer-logo">
                 <span>TD <script>document.write(new Date().getFullYear())</script> · To-Do To-Did</span>
@@ -102,11 +209,9 @@
             <div class="footer-info">
                 <span id="footer-date"></span> · <span id="footer-time"></span>
             </div>
-            <div class="footer-credits">
-                Credits: Designed & built by Fabio Papoila
-            </div>
         </footer>
     </div>
+    
     <script src="jquery.js"></script>
     <script src="javascript.js"></script>
 </body>

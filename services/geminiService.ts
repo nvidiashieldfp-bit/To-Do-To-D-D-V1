@@ -70,8 +70,10 @@ export async function parseTaskInput(input: string): Promise<{
 
     /**
      * Parse the AI response. Gemini is instructed to return only the JSON payload.
+     * We strip markdown fences (```json ... ```) just in case the model wraps it.
      */
-    const parsed = JSON.parse(response.text);
+    const cleanText = response.text ? response.text.replace(/```json|```/g, '').trim() : "{}";
+    const parsed = JSON.parse(cleanText);
     
     // Explicit sanitization of LLM output to prevent string "null" from entering state
     return {

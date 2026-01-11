@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import App from './App';
 
 /**
@@ -29,7 +29,7 @@ if (!rootElement) {
  * Create a React root and render the application within StrictMode.
  * StrictMode is used to highlight potential problems in the application during development.
  */
-const root = ReactDOM.createRoot(rootElement);
+const root = createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <App />

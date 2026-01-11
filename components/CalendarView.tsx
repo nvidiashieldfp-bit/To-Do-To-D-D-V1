@@ -1,3 +1,4 @@
+
 import React, { useMemo, useRef, useEffect, useState } from 'react';
 import { Task, SupportedLanguage } from '../types';
 import { formatDate, t, getNowString, sanitize, getWeekdays } from '../constants';
@@ -169,7 +170,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ tasks, language }) =
                     text-[7px] md:text-[9px] font-bold px-1 py-0.5 md:px-2 md:py-1 rounded-sm md:rounded-lg truncate cursor-grab active:cursor-grabbing transition-all icon-muted shadow-sm border-l-2 md:border-l-[3px] leading-tight
                     ${isMuted 
                        ? 'bg-gray-200 text-gray-700 dark:bg-white/10 dark:text-gray-300 border-gray-400' 
-                       : 'bg-white text-gray-700 dark:bg-white/10 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-white/20 border-indigo-500'
+                       : 'bg-gray-50 text-gray-700 dark:bg-white/10 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-white/20 border-indigo-500'
                     }
                   `}
                   style={{ opacity: 'var(--icon-opacity)' }}
@@ -184,7 +185,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ tasks, language }) =
                   onChange={e => setDraft(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter') handleSaveTask(); if (e.key === 'Escape') setActiveInput('none'); }}
                   onBlur={() => { if (draft === '') setActiveInput('none'); }}
-                  className="w-full bg-white dark:bg-zinc-800 border-none outline-none text-[8px] md:text-[9px] font-bold p-0.5 md:p-1 rounded md:rounded-lg shadow-lg ring-1 md:ring-2 ring-indigo-500 z-20"
+                  className="w-full bg-gray-50 dark:bg-zinc-800 border-none outline-none text-[8px] md:text-[9px] font-bold p-0.5 md:p-1 rounded md:rounded-lg shadow-lg ring-1 md:ring-2 ring-indigo-500 z-20"
                   placeholder="..."
                   autoFocus
                   onClick={e => e.stopPropagation()}
@@ -252,6 +253,13 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ tasks, language }) =
                     const hourStr = `${h.toString().padStart(2, '0')}:00`;
                     const isCreatingHere = activeInput === 'calendar' && calendarDraftCoords.date === dateStr && calendarDraftCoords.time === hourStr;
                     
+                    // FIXED: Flexible time matching logic
+                    const hourTasks = tasks.filter(t => {
+                      if (!t.date || t.date !== dateStr || t.completed || !t.time) return false;
+                      const taskHour = parseInt(t.time.split(':')[0], 10);
+                      return taskHour === h;
+                    });
+                    
                     return (
                       <div 
                         key={h}
@@ -263,7 +271,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ tasks, language }) =
                          {/* Hour Line Highlight (Desktop) */}
                         <div className="absolute inset-x-0 top-0 h-px bg-transparent group-hover/slot:bg-indigo-500/20 transition-colors" />
 
-                        {tasks.filter(t => t.date === dateStr && t.time === hourStr && !t.completed).map(t => (
+                        {hourTasks.map(t => (
                           <div 
                             key={t.id}
                             draggable
@@ -290,7 +298,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ tasks, language }) =
                               onChange={e => setDraft(e.target.value)}
                               onKeyDown={e => { if (e.key === 'Enter') handleSaveTask(); if (e.key === 'Escape') setActiveInput('none'); }}
                               onBlur={() => { if (draft === '') setActiveInput('none'); }}
-                              className="w-full bg-white dark:bg-zinc-800 border-none outline-none text-[8px] md:text-[9px] font-bold p-1 rounded ring-2 ring-indigo-500 shadow-xl"
+                              className="w-full bg-gray-50 dark:bg-zinc-800 border-none outline-none text-[8px] md:text-[9px] font-bold p-1 rounded ring-2 ring-indigo-500 shadow-xl"
                               placeholder="..."
                               autoFocus
                               onClick={e => e.stopPropagation()}
@@ -344,7 +352,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ tasks, language }) =
               onClick={() => updateCalendarNav(calendarNavDate, 'weekly')} 
               className={`flex-1 md:flex-none px-4 md:px-6 py-1.5 md:py-2 text-[9px] md:text-[10px] font-bold uppercase rounded-lg transition-all 
                 ${view === 'weekly' 
-                   ? 'bg-white dark:bg-zinc-800 text-indigo-500 shadow-sm transform scale-105'
+                   ? 'bg-gray-50 dark:bg-zinc-800 text-indigo-500 shadow-sm transform scale-105'
                    : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
             >
@@ -354,7 +362,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ tasks, language }) =
               onClick={() => updateCalendarNav(calendarNavDate, 'monthly')} 
               className={`flex-1 md:flex-none px-4 md:px-6 py-1.5 md:py-2 text-[9px] md:text-[10px] font-bold uppercase rounded-lg transition-all
                 ${view === 'monthly' 
-                   ? 'bg-white dark:bg-zinc-800 text-indigo-500 shadow-sm transform scale-105'
+                   ? 'bg-gray-50 dark:bg-zinc-800 text-indigo-500 shadow-sm transform scale-105'
                    : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
             >
