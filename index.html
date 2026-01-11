@@ -89,23 +89,38 @@
             --icon-opacity: 1;
         }
 
+        html {
+            background-color: var(--bg-light);
+            height: 100%;
+            transition: background-color 0.4s ease;
+        }
+        
+        html.dark {
+            background-color: var(--bg-dark);
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            background-color: var(--bg-light);
-            /* Removed yellow radial gradient to reduce visual fatigue/glare */
+            
+            /* Transparent so HTML background shows through */
+            background-color: transparent; 
             background-image: none;
+            
             color: var(--text-light);
-            transition: background-color 0.4s ease, color 0.4s ease;
+            transition: color 0.4s ease;
+            
             overscroll-behavior-y: none;
             -webkit-tap-highlight-color: transparent;
             min-height: 100vh;
             overflow-y: auto;
+            
+            display: flex;
+            flex-direction: column;
         }
         
         .dark body {
-            background-color: #000000;
             /* The Sun appears in night mode as a deep indigo/silver glow */
             background-image: 
                 radial-gradient(circle at top center, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 70%),
@@ -145,8 +160,13 @@
             transition: opacity 0.2s ease;
         }
 
-        html, body { height: 100%; margin: 0; padding: 0; }
-        #root { min-height: 100%; display: flex; flex-direction: column; }
+        /* Ensure root fills available space */
+        #root { 
+            flex: 1;
+            display: flex; 
+            flex-direction: column; 
+            width: 100%;
+        }
     </style>
 <script type="importmap">
 {

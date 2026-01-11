@@ -62,14 +62,20 @@ body.dark {
 body.landing-open { overflow: hidden; }
 
 /* --- CORPO E FUNDO --- */
+html {
+    background-color: var(--app-bg); /* Fix PC background bleed */
+    transition: background-color 0.4s ease;
+}
+
 body {
     margin: 0; 
     font-family: 'Inter', sans-serif;
-    background-color: var(--app-bg); 
+    background-color: transparent; 
     color: var(--app-text);
     min-height: 100vh; 
     overflow-x: hidden;
-    transition: background-color 0.4s ease, color 0.4s ease;
+    transition: color 0.4s ease;
+    -webkit-tap-highlight-color: transparent; /* Remove flash azul em mobile */
 }
 
 body.dark { 
@@ -96,18 +102,26 @@ body.dark {
     position: fixed; inset: 0; z-index: 5000;
     background: var(--landing-bg); 
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Scroll suave em iOS */
 }
 
 .landing-scroll-container { display: flex; flex-direction: column; min-height: 100%; }
 
 .landing-hero {
-    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    /* CORREÇÃO MOBILE: Usar dvh para evitar que o browser cubra o botão e fallback vh */
+    min-height: 100vh; 
+    min-height: 100dvh; 
+    display: flex; align-items: center; justify-content: center;
     text-align: center; padding: 20px;
+    padding-bottom: 120px; /* Segurança extra para mobile */
 }
 .landing-hero-content { 
     max-width: 800px; 
     animation: fadeInScale 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards; 
     opacity: 0;
+    /* FIX MOBILE TOUCH: Garante que conteúdo está acima de backgrounds */
+    position: relative;
+    z-index: 2;
 }
 
 .landing-title { font-size: 40px; font-weight: 800; tracking: -0.05em; margin-bottom: 8px; line-height: 1; color: var(--landing-title); }
@@ -124,6 +138,15 @@ body.dark {
     background: var(--p-accent); color: white; border: none; padding: 20px 48px;
     border-radius: 20px; font-size: 18px; font-weight: 600; cursor: pointer;
     box-shadow: 0 20px 40px rgba(99,102,241,0.2); transition: transform 0.2s, box-shadow 0.2s;
+    touch-action: manipulation; /* Melhora resposta ao toque */
+    -webkit-appearance: none; /* Remove estilos nativos iOS */
+    /* FIX MOBILE: Z-index elevado para garantir clique */
+    position: relative;
+    z-index: 10;
+}
+/* MOBILE: Removemos o scale no active para evitar que o botão 'fuja' do dedo */
+@media (min-width: 769px) {
+    .landing-btn:active { transform: scale(0.95); }
 }
 .landing-btn:hover { transform: scale(1.05); box-shadow: 0 25px 50px rgba(99,102,241,0.3); }
 
@@ -172,112 +195,3 @@ body.dark {
 .footer-brand { display: flex; justify-content: center; align-items: center; gap: 12px; font-size: 10px; font-weight: 800; letter-spacing: 0.3em; color: var(--app-text-muted); margin-bottom: 16px; }
 .dot { width: 4px; height: 4px; background: var(--p-accent); border-radius: 50%; }
 .footer-motto { font-size: 12px; font-style: italic; color: var(--app-text-muted); margin: 0; }
-
-@keyframes fadeInScale { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-
-/* --- HEADER APP --- */
-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-@media (min-width: 768px) { header { margin-bottom: 60px; } }
-
-.brand h1 { margin: 0; font-size: 24px; font-weight: 700; tracking: -0.02em; color: var(--app-text); }
-.brand p { margin: 2px 0 0; font-size: 10px; font-weight: 700; color: var(--app-text-muted); text-transform: uppercase; letter-spacing: 2px; }
-
-.controls button {
-    width: 40px; height: 40px; border-radius: 12px; border: none;
-    background: var(--surface-bg); color: var(--app-text); 
-    cursor: pointer; transition: 0.2s; opacity: var(--icon-opacity); font-size: 16px;
-}
-@media (min-width: 768px) { .controls button { width: 44px; height: 44px; font-size: 18px; } }
-
-/* --- INPUT --- */
-.input-group {
-    display: flex; align-items: center; gap: 12px;
-    max-width: 600px; margin: 0 auto 40px;
-}
-#form-priority {
-    width: 10px; height: 48px; border-radius: 8px; flex-shrink: 0;
-    border: none; cursor: pointer; transition: 0.2s;
-}
-#task-input {
-    flex: 1; padding: 16px 24px; border-radius: 16px; border: none; font-size: 20px;
-    background: var(--input-bg); color: var(--app-text); outline: none;
-    transition: box-shadow 0.2s;
-}
-#task-input::placeholder { color: var(--app-text-muted); }
-#task-input:focus { box-shadow: 0 0 0 2px var(--p-accent); }
-
-/* --- VISTAS --- */
-.view { display: none; width: 100%; max-width: 650px; margin: 0 auto; flex: 1; }
-.view.active { display: block; }
-#calendar-view.active { max-width: 1000px; }
-
-.section { margin-bottom: 24px; padding: 4px; border-radius: 16px; }
-.section-header {
-    width: 100%; display: flex; align-items: center; gap: 12px;
-    background: none; border: none; color: var(--app-text-muted);
-    font-size: 11px; font-weight: 700; letter-spacing: 2px;
-    padding: 12px 0; cursor: pointer; text-transform: uppercase;
-}
-.section-header span:nth-child(2) { flex: 1; height: 1px; background: var(--landing-border); }
-.section-header .count { font-size: 9px; padding: 2px 8px; background: var(--landing-border); border-radius: 10px; color: var(--app-text); }
-
-/* Linhas de Tarefa */
-.task-row {
-    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
-    background: var(--card-bg); border-radius: 14px; margin-bottom: 8px;
-    cursor: default; transition: background 0.2s; position: relative; color: var(--app-text);
-}
-.task-row.completed { opacity: 0.4; }
-
-.priority-bar { width: 8px; height: 28px; border-radius: 6px; flex-shrink: 0; cursor: pointer; transition: all 0.2s; border: none; }
-.priority-bar.HIGH { background: #f43f5e; }
-.priority-bar.MEDIUM { background: #f59e0b; }
-.priority-bar.LOW { background: #10b981; }
-
-.checkbox { width: 20px; height: 20px; border: 2px solid var(--border-color); border-radius: 50%; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; opacity: var(--icon-opacity); }
-.task-row.completed .checkbox { background: var(--p-accent); border-color: var(--p-accent); }
-.task-row.completed .checkbox::after { content: '✓'; color: white; font-size: 12px; font-weight: 800; }
-
-.title { flex: 1; font-weight: 500; font-size: 17px; outline: none; border: none; background: none; color: inherit; }
-.task-row.completed .title { text-decoration: line-through; color: var(--app-text-muted); }
-
-.delete-btn { opacity: 0; transition: opacity 0.2s; cursor: pointer; border: none; background: none; font-size: 14px; grayscale: 100%; }
-.task-row:hover .delete-btn { opacity: 0.5; }
-.delete-btn:hover { opacity: 1; }
-
-/* --- CALENDÁRIO --- */
-#calendar-view { background: var(--card-bg); border-radius: 24px; padding: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-@media (min-width: 768px) { #calendar-view { padding: 24px; } }
-body.dark #calendar-view { border: 1px solid var(--border-color); }
-
-.calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.calendar-header .nav { display: flex; align-items: center; gap: 8px; }
-.nav-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 8px; border-radius: 8px; transition: background 0.2s; opacity: var(--icon-opacity); color: var(--app-text); }
-.nav-btn:hover { background: var(--card-hover); }
-.calendar-header h2 { margin: 0; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: -1px; color: var(--app-text); }
-
-.view-selector { background: var(--surface-bg); padding: 4px; border-radius: 12px; display: flex; }
-.view-selector button { border: none; background: none; color: var(--app-text-muted); font-size: 9px; font-weight: 700; padding: 6px 12px; cursor: pointer; border-radius: 8px; transition: all 0.2s; }
-.view-selector button.active { background: var(--card-bg); color: var(--p-accent); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-body.dark .view-selector button.active { color: white; }
-
-#calendar-grid { display: grid; grid-template-cols: repeat(7, 1fr); gap: 1px; background: var(--border-color); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
-
-.cal-day { min-height: 60px; background: var(--card-bg); padding: 4px; position: relative; cursor: pointer; transition: background 0.2s; display: flex; flex-direction: column; gap: 2px; }
-@media (min-width: 768px) { .cal-day { min-height: 120px; padding: 8px; gap: 4px; } }
-body.dark .cal-day { background: var(--app-bg); }
-
-.cal-day.today .day-num { background: var(--p-accent); color: white; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-.day-num { font-size: 9px; font-weight: 700; color: var(--app-text-muted); margin-bottom: 2px; }
-.cal-task-chip { background: var(--p-accent); color: white; font-size: 7px; font-weight: 700; padding: 2px 4px; border-radius: 4px; margin-bottom: 1px; cursor: grab; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.cal-day-header { background: var(--card-bg); color: var(--app-text-muted); padding: 4px; font-size: 9px; font-weight: 700; text-align: center; text-transform: uppercase; }
-
-/* Mantras */
-.mantra-wrapper { width: 100%; display: flex; justify-content: center; padding: 16px 0; margin-bottom: 8px; pointer-events: none; user-select: none; }
-#dynamic-mantra { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3em; opacity: 0.4; text-align: center; max-width: 300px; line-height: 1.6; transition: opacity 1s ease; color: var(--app-text); }
-
-/* Rodapé */
-footer#footer { margin-top: auto; padding: 40px 0 20px; text-align: center; opacity: 0.2; cursor: default; }
-footer#footer:hover { opacity: 1; }
-.footer-logo { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 8px; color: var(--app-text); }
-.footer-info { font-size: 8px; color: var(--app-text-muted); font-weight: 500; margin-bottom: 8px; tabular-nums; }

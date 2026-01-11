@@ -1,8 +1,20 @@
 
 $(function() {
     /* 
+     * UUID Polyfill (Para browsers móveis antigos)
+     */
+    function generateUUID() {
+        if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+            return crypto.randomUUID();
+        }
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    /* 
      * DICIONÁRIO DE TRADUÇÃO (I18n)
-     * Replicado do constants.tsx para paridade completa.
      */
     const TRANSLATIONS = {
         en: { 
@@ -138,7 +150,13 @@ $(function() {
     };
     if (!['en','pt','es','fr'].includes(state.language)) state.language = 'en';
 
-    function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function save() { 
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); 
+        } catch(e) {
+            console.warn('LocalStorage not available:', e);
+        }
+    }
     
     function getNowString() {
       const d = new Date();
@@ -346,7 +364,8 @@ $(function() {
         const parsed = parseInput(val);
         const finalPrio = (state.draftPriority !== 'MEDIUM') ? state.draftPriority : parsed.priority;
         state.tasks.push({
-            id: crypto.randomUUID(), title: parsed.title, priority: finalPrio,
+            id: generateUUID(), // Usando polyfill
+            title: parsed.title, priority: finalPrio,
             date: parsed.date, completed: false, createdAt: Date.now()
         });
         state.draftPriority = 'MEDIUM';
@@ -384,7 +403,26 @@ $(function() {
         render();
     });
 
-    $('#btn-open-app').on('click', () => { state.showLanding = false; render(); save(); });
+    /* 
+     * ENTRY FIX: Delegated Binding para robustez em PC/Mobile
+     */
+    function enterApp(e) {
+        if (!state.showLanding) return; // Debounce lógico
+        e.preventDefault();
+        
+        state.showLanding = false; 
+        
+        // FORÇA BRUTA: Esconde via estilo direto
+        $('#landing-screen').hide();
+        $('body').removeClass('landing-open');
+
+        render(); 
+        save(); // Já tem try/catch internamente agora
+    }
+
+    // Binding delegado no documento garante que funciona mesmo se o DOM for manipulado
+    $(document).on('click touchstart', '#btn-open-app', enterApp);
+
     $('#toggle-view').on('click', () => { state.viewMode = state.viewMode === 'list' ? 'calendar' : 'list'; render(); save(); });
     $('#toggle-theme').on('click', () => { state.theme = (state.theme === 'light') ? 'night' : 'light'; render(); save(); });
     
