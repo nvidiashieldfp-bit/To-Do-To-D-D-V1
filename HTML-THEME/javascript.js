@@ -421,7 +421,9 @@ $(function() {
     }
 
     // Binding delegado no documento garante que funciona mesmo se o DOM for manipulado
-    $(document).on('click touchstart', '#btn-open-app', enterApp);
+    // Usa um seletor mais específico e eventos separados para evitar ghosts
+    $(document).on('click', '#btn-open-app', enterApp);
+    $(document).on('touchstart', '#btn-open-app', enterApp);
 
     $('#toggle-view').on('click', () => { state.viewMode = state.viewMode === 'list' ? 'calendar' : 'list'; render(); save(); });
     $('#toggle-theme').on('click', () => { state.theme = (state.theme === 'light') ? 'night' : 'light'; render(); save(); });
