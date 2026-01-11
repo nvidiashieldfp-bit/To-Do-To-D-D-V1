@@ -45,7 +45,8 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  const sortedTasks = useMemo(() => getSortedTasks(), [getSortedTasks, currentTime]);
+  // CRITICAL FIX: Added state.tasks to dependency array to force re-calculation on any data change
+  const sortedTasks = useMemo(() => getSortedTasks(), [getSortedTasks, currentTime, state.tasks]);
   const lang = state.language;
 
   const isMuted = ['ultra-low', 'photophobia'].includes(state.visualPreset);
